@@ -1,15 +1,4 @@
 #include "sort.h"
-#include <stdio.h>
-
-long unsigned int len(listint_t *head)
-{
-	long unsigned int count;
-
-	for (count = 0; head; head = head->next)
-		count++;
-
-	return (count);
-}
 
 /**
  * insertion_sort_list - Sorts a doubly linked list of
@@ -18,27 +7,43 @@ long unsigned int len(listint_t *head)
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *index = *list, *prev, *node;
+	listint_t *index = *list, *aux;
 
-	if (!list || !*list || len(*list) < 2)
+	if (!list || !index || !index->next)
 		return;
 
 	index = index->next;
 	for (; index; index = index->next)
 	{
-		node = index;
-		prev = node->prev;
-		while (prev && node->n < prev->n)
+		aux = index;
+		while (aux->prev && aux)
 		{
-			prev->next = node->next;
-			if (node->next)
-				node->next->prev = prev;
-			node->next = prev;
-			node->prev = prev->prev;
-			prev->prev = node;
-			print_list(*list);
-			printf("len: %lu\n", len(*list));
-			prev = prev->prev;
+			if (aux->prev->n > aux->n)
+			{
+				swap_nodes(aux->prev, aux);
+				if (!aux->prev)
+					*list = aux;
+				print_list(*list);
+			}
+			else
+				aux = aux->prev;
 		}
 	}
+}
+
+/**
+ * swap_nodes - Swap two nodes
+ * @previous: first node
+ * @current: second node
+ */
+void swap_nodes(listint_t *first, listint_t *second)
+{
+	if (first->prev)
+		first->prev->next = second;
+	if (second->next)
+		second->next->prev = first;
+	first->next = second->next;
+	second->prev = first->prev;
+	first->prev = second;
+	second->next = first;
 }
