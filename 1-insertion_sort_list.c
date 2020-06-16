@@ -1,4 +1,5 @@
 #include "sort.h"
+#include <stdio.h>
 
 /**
  * insertion_sort_list - Sorts a doubly linked list of
@@ -8,6 +9,7 @@
 void insertion_sort_list(listint_t **list)
 {
 	listint_t *index = *list, *aux;
+	int swap = 1;
 
 	if (!list || !index || !index->next)
 		return;
@@ -24,10 +26,16 @@ void insertion_sort_list(listint_t **list)
 				if (!aux->prev)
 					*list = aux;
 				print_list(*list);
+				if (swap == 1)
+				{
+					swap = 0;
+					index = index->next;
+				}
 			}
 			else
 				aux = aux->prev;
 		}
+		swap = 1;
 	}
 }
 
