@@ -29,7 +29,8 @@ void insertion_sort_list(listint_t **list)
 				if (swap == 1)
 				{
 					swap = 0;
-					index = index->next;
+					if (index->next)
+						index = index->next;
 				}
 			}
 			else
