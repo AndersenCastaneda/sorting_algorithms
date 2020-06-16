@@ -1,22 +1,4 @@
 #include "sort.h"
-#include <stdio.h>
-
-/**
- * swap_nodes - Swap two nodes
- * @first: first node
- * @second: second node
- */
-void swap_nodes(listint_t *first, listint_t *second)
-{
-	if (first->prev)
-		first->prev->next = second;
-	if (second->next)
-		second->next->prev = first;
-	first->next = second->next;
-	second->prev = first->prev;
-	first->prev = second;
-	second->next = first;
-}
 
 /**
  * insertion_sort_list - Sorts a doubly linked list of
@@ -25,26 +7,29 @@ void swap_nodes(listint_t *first, listint_t *second)
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *index = *list, *aux;
+	listint_t *index, *aux;
 
-	if (!list || !index || !index->next)
+	if (!list || !list[0] || !list[0]->next)
 		return;
 
-	index = index->next;
-	for (; index; index = index->next)
+	index = (*list)->next;
+	while (index != NULL)
 	{
 		aux = index;
-		while (aux->prev && aux)
+		index = index->next;
+		while (aux->prev && aux->n < aux->prev->n)
 		{
-			if (aux->prev->n > aux->n)
-			{
-				swap_nodes(aux->prev, aux);
-				if (!aux->prev)
-					*list = aux;
-				print_list(*list);
-			}
+			aux->prev->next = aux->next;
+			aux->next = aux->prev;
+			aux->prev = aux->next->prev;
+			aux->next->prev = aux;
+			if (aux->prev)
+				aux->prev->next = aux;
 			else
-				aux = aux->prev;
+				*list = aux;
+			if (aux->next->next)
+				aux->next->next->prev = aux->next;
+			print_list(*list);
 		}
 	}
 }
