@@ -9,6 +9,7 @@
 void swap(int *array, int a, int b)
 {
 	int temp = array[a];
+
 	array[a] = array[b];
 	array[b] = temp;
 }
@@ -16,9 +17,9 @@ void swap(int *array, int a, int b)
 /**
  * quick_recursion - Sorts using recursion
  * @array: Array to sort
- * @size: Size of array
  * @start: Start index
  * @end: End index
+ * @size: Size of array
  */
 void quick_recursion(int *array, int start, int end, size_t size)
 {
